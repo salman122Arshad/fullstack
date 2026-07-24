@@ -81,7 +81,7 @@ export function ShareDialog({ documentId, onClose }: { documentId: string; onClo
         </div>
 
         <form onSubmit={handleShare} className="mb-5 flex flex-col gap-2">
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <div className="relative flex-1">
               <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
@@ -96,7 +96,7 @@ export function ShareDialog({ documentId, onClose }: { documentId: string; onClo
             <select
               value={permission}
               onChange={(e) => setPermission(e.target.value as "VIEW" | "EDIT")}
-              className="rounded-lg border border-slate-200 px-2 py-2 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+              className="w-full rounded-lg border border-slate-200 px-2 py-2 text-sm outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 sm:w-auto"
             >
               <option value="VIEW">Can view</option>
               <option value="EDIT">Can edit</option>
