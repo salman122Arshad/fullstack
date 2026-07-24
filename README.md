@@ -6,6 +6,7 @@ after a refresh. Built with Next.js (App Router), Prisma, Postgres, and
 Tiptap.
 
 **Live deployment:** https://fullstack-seven-roan.vercel.app
+**Source code:** https://github.com/salman122Arshad/fullstack
 
 ## Try it now (no setup)
 

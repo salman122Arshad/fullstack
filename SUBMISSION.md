@@ -2,7 +2,8 @@
 
 ## What's included in this folder
 
-- **Source code** — the full Next.js project (this repository).
+- **Source code** — the full Next.js project (this repository), also
+  pushed to GitHub: https://github.com/salman122Arshad/fullstack
 - `README.md` — local setup/run instructions, feature list, supported file
   types, seeded test accounts, screenshots.
 - `ARCHITECTURE.md` — what was prioritized, key tradeoffs, what was
