@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2, Upload } from "lucide-react";
 
 const ACCEPT = ".txt,.md,.docx";
 
@@ -36,8 +37,10 @@ export function UploadButton() {
       <button
         onClick={() => inputRef.current?.click()}
         disabled={loading}
-        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:opacity-60"
+        title="Supports .txt, .md, .docx"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 disabled:opacity-60"
       >
+        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
         {loading ? "Importing…" : "Upload file"}
       </button>
       <input ref={inputRef} type="file" accept={ACCEPT} className="hidden" onChange={handleChange} />

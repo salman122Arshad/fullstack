@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { Avatar } from "@/components/Avatar";
 
 export function LoginButton({ userId, name, email }: { userId: string; name: string; email: string }) {
   const router = useRouter();
@@ -34,15 +36,20 @@ export function LoginButton({ userId, name, email }: { userId: string; name: str
       <button
         onClick={handleLogin}
         disabled={loading}
-        className="flex w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3 text-left shadow-sm transition hover:border-slate-300 hover:shadow disabled:opacity-60"
+        className="group flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md disabled:pointer-events-none disabled:opacity-60"
       >
-        <span>
-          <span className="block font-medium text-slate-900">{name}</span>
-          <span className="block text-sm text-slate-500">{email}</span>
+        <Avatar name={name} size="md" />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate font-medium text-slate-900">{name}</span>
+          <span className="block truncate text-sm text-slate-500">{email}</span>
         </span>
-        <span className="text-sm text-slate-400">{loading ? "Signing in…" : "Continue →"}</span>
+        {loading ? (
+          <Loader2 className="h-4 w-4 shrink-0 animate-spin text-slate-400" />
+        ) : (
+          <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-indigo-500" />
+        )}
       </button>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="px-1 text-sm text-red-600">{error}</p>}
     </div>
   );
 }

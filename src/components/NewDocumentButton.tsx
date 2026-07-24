@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2, Plus } from "lucide-react";
 
 export function NewDocumentButton() {
   const router = useRouter();
@@ -24,9 +25,10 @@ export function NewDocumentButton() {
     <button
       onClick={handleClick}
       disabled={loading}
-      className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-700 disabled:opacity-60"
+      className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm shadow-indigo-600/20 transition hover:bg-indigo-500 active:bg-indigo-700 disabled:opacity-60"
     >
-      {loading ? "Creating…" : "+ New document"}
+      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+      New document
     </button>
   );
 }

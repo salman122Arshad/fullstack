@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import { ArrowLeft, Check, Eye, Loader2, Share2, TriangleAlert } from "lucide-react";
 import { Toolbar } from "@/components/Toolbar";
 import { ShareDialog } from "@/components/ShareDialog";
 
@@ -38,6 +39,9 @@ export function DocumentEditor({
     content: initialContentHtml,
     editable: canEdit,
     immediatelyRender: false,
+    editorProps: {
+      attributes: { class: "prose prose-slate max-w-none px-6 py-6 focus:outline-none min-h-[60vh]" },
+    },
     onUpdate: ({ editor }) => {
       scheduleSave({ contentHtml: editor.getHTML() });
     },
@@ -86,20 +90,21 @@ export function DocumentEditor({
   return (
     <main className="mx-auto min-h-screen max-w-3xl px-4 py-8">
       <div className="mb-4 flex items-center justify-between">
-        <Link href="/documents" className="text-sm text-slate-500 hover:underline">
-          ← All documents
+        <Link
+          href="/documents"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-500 transition hover:text-slate-800"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          All documents
         </Link>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-400">
-            {status === "saving" && "Saving…"}
-            {status === "saved" && "Saved"}
-            {status === "error" && <span className="text-red-500">Could not save</span>}
-          </span>
+          <SaveIndicator status={status} />
           {isOwner && (
             <button
               onClick={() => setShareOpen(true)}
-              className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
             >
+              <Share2 className="h-3.5 w-3.5" />
               Share
             </button>
           )}
@@ -107,7 +112,8 @@ export function DocumentEditor({
       </div>
 
       {!isOwner && (
-        <p className="mb-3 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-700">
+        <p className="mb-3 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+          <Eye className="h-3.5 w-3.5" />
           Shared by {ownerName} · You can {canEdit ? "edit" : "only view"} this document.
         </p>
       )}
@@ -120,16 +126,42 @@ export function DocumentEditor({
           if (e.key === "Enter") (e.target as HTMLInputElement).blur();
         }}
         disabled={!canEdit}
-        className="mb-4 w-full border-none bg-transparent text-3xl font-semibold text-slate-900 outline-none disabled:opacity-90"
+        className="mb-4 w-full rounded-lg border-none bg-transparent px-1 text-3xl font-semibold text-slate-900 outline-none transition focus:bg-white focus:shadow-sm disabled:opacity-90"
         aria-label="Document title"
       />
 
-      <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         {canEdit && <Toolbar editor={editor} />}
-        <EditorContent editor={editor} className="prose prose-slate max-w-none px-4 py-4 focus:outline-none" />
+        <EditorContent editor={editor} />
       </div>
 
       {shareOpen && <ShareDialog documentId={documentId} onClose={() => setShareOpen(false)} />}
     </main>
+  );
+}
+
+function SaveIndicator({ status }: { status: SaveStatus }) {
+  if (status === "idle") return null;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+      {status === "saving" && (
+        <>
+          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          Saving…
+        </>
+      )}
+      {status === "saved" && (
+        <>
+          <Check className="h-3.5 w-3.5 text-emerald-500" />
+          Saved
+        </>
+      )}
+      {status === "error" && (
+        <span className="inline-flex items-center gap-1.5 text-red-500">
+          <TriangleAlert className="h-3.5 w-3.5" />
+          Could not save
+        </span>
+      )}
+    </span>
   );
 }

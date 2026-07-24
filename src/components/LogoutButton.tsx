@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -12,8 +13,13 @@ export function LogoutButton() {
   }
 
   return (
-    <button onClick={handleClick} className="text-sm text-slate-500 underline-offset-2 hover:underline">
-      Sign out
+    <button
+      onClick={handleClick}
+      title="Sign out"
+      className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+    >
+      <LogOut className="h-4 w-4" />
+      <span className="hidden sm:inline">Sign out</span>
     </button>
   );
 }
