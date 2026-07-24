@@ -37,6 +37,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local tooling state (Claude Code, editors, etc.)
+.claude
+.agents
+.windsurf
+skills-lock.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
