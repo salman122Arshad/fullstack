@@ -52,14 +52,18 @@ set anything up.
   error messages) on every API route.
 - One automated test suite (Vitest) covering the document-authorization
   logic that underlies the sharing feature.
+- **Stretch: export to Markdown or PDF** — any document you can view can be
+  exported (Markdown download, or PDF via the browser's print dialog);
+  available to viewers as well as owners since it doesn't mutate anything.
 
 ## What's incomplete / explicitly out of scope
 
 - **Real-time collaboration** (live multi-cursor co-editing) — not
   attempted; see `ARCHITECTURE.md` for why.
-- **Comments/suggestion mode, version history, PDF/Markdown export,
-  granular role-based permissions** — all listed as optional stretch items
-  in the brief; none were built, to keep focus on the core four surfaces.
+- **Comments/suggestion mode, version history, granular role-based
+  permissions** — all listed as optional stretch items in the brief; export
+  was the one stretch item built (see above), the rest skipped to keep to
+  one deliberate addition rather than several half-built ones.
 - **Concurrent-edit conflict handling** — two users with edit access saving
   the same document at the same time will last-write-wins overwrite each
   other; there's no version check or merge.
@@ -68,9 +72,9 @@ set anything up.
 
 1. A version counter + "this document changed, reload?" prompt to make
    concurrent edits safe (short of full real-time collaboration).
-2. Basic version history (snapshot-on-save + restore).
+2. Basic version history (snapshot-on-save + restore) — the next stretch
+   item after export.
 3. Better `.docx` fidelity (table/style mapping in the mammoth conversion).
-4. Markdown/PDF export.
 
 Full reasoning for all of the above is in `ARCHITECTURE.md`.
 

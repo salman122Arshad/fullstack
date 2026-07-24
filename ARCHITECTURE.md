@@ -83,15 +83,41 @@ Supabase-Marketplace integration injects when connected with a `DATABASE`
 prefix — matching the platform's naming rather than introducing an
 extra layer of variable-renaming/aliasing.
 
+## Stretch: export to Markdown / PDF
+
+The one optional stretch item I added (per the brief: "add one small
+enhancement... do not sacrifice core functionality"). Both export paths are
+in `ExportMenu.tsx`, next to Share, available to anyone who can view the
+document (not owner-gated, since exporting doesn't mutate anything):
+
+- **Markdown** — `turndown` converts the Tiptap HTML to Markdown client-side
+  (`src/lib/exportMarkdown.ts`) and triggers a browser download. No server
+  round-trip needed since the content is already in the browser. Markdown
+  has no native underline syntax, so a custom Turndown rule preserves it as
+  inline `<u>` (most Markdown renderers pass raw HTML through) rather than
+  silently dropping that formatting.
+- **PDF** — deliberately *not* a server-side rendering pipeline
+  (Puppeteer/etc. is real infrastructure for a "small enhancement"). Instead,
+  a `@media print` stylesheet hides everything except the title and content,
+  and the button calls the browser's native `window.print()` → "Save as
+  PDF." Zero new server surface, works in every browser, and is the same
+  approach Notion/Google Docs' own print-to-PDF paths use under the hood.
+
+This was chosen over the other stretch options (version history, real-time
+collaboration, comments, granular permissions) specifically because it's
+self-contained — no new DB table, no migration, no change to the access-
+control surface I was most careful about getting right elsewhere.
+
 ## What I deliberately did not build
 
 - **Real-time collaboration** (multi-cursor, live co-editing). This is the
   single most valuable stretch feature but also the biggest time sink —
   correct conflict resolution (CRDT/OT) is its own project. Out of scope for
   this timebox; noted as the first thing I'd build next.
-- **Comments / suggestion mode, version history, PDF export.** All
-  explicitly listed as optional stretch work in the brief; skipped to keep
-  focus on the core four surfaces (edit, upload, share, persist).
+- **Comments / suggestion mode, document version history.** Both explicitly
+  listed as optional stretch work in the brief; skipped in favor of the
+  export feature above to keep to *one* stretch addition, per the brief's
+  own instruction not to spread stretch effort thin.
 - **Granular/role-based permissions beyond view/edit.**
 - **Revoking/rotating the mocked-auth session** beyond a logout that clears
   the cookie — there's no "sign out everywhere" or session listing, since
@@ -106,10 +132,8 @@ extra layer of variable-renaming/aliasing.
    improvement short of full real-time collaboration.
 2. **Document version history** (even a simple "snapshot on each save,
    list + restore" rather than granular diffs) — the stretch item that
-   pairs best with the autosave model already in place.
+   pairs best with the autosave model already in place, and the next stretch
+   item I'd pick up after export.
 3. **Better `.docx` fidelity** — mammoth's default conversion drops some
    structure (tables in particular); a style-mapping config would recover
    more of it.
-4. **Export to Markdown/PDF** — Tiptap's HTML is a straightforward source
-   for a Markdown export; PDF would mean adding a rendering step
-   (e.g. Puppeteer) which is more infrastructure than time allowed here.

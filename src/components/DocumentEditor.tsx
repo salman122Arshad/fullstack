@@ -8,6 +8,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { ArrowLeft, Check, Eye, Loader2, Share2, TriangleAlert } from "lucide-react";
 import { Toolbar } from "@/components/Toolbar";
 import { ShareDialog } from "@/components/ShareDialog";
+import { ExportMenu } from "@/components/ExportMenu";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
@@ -89,7 +90,7 @@ export function DocumentEditor({
 
   return (
     <main className="mx-auto min-h-screen max-w-3xl px-4 py-8">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between print:hidden">
         <Link
           href="/documents"
           className="inline-flex items-center gap-1.5 text-sm text-slate-500 transition hover:text-slate-800"
@@ -97,8 +98,9 @@ export function DocumentEditor({
           <ArrowLeft className="h-4 w-4" />
           All documents
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 print:hidden">
           <SaveIndicator status={status} />
+          <ExportMenu title={title} getHtml={() => editor?.getHTML() ?? ""} />
           {isOwner && (
             <button
               onClick={() => setShareOpen(true)}
@@ -112,27 +114,33 @@ export function DocumentEditor({
       </div>
 
       {!isOwner && (
-        <p className="mb-3 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+        <p className="mb-3 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700 print:hidden">
           <Eye className="h-3.5 w-3.5" />
           Shared by {ownerName} · You can {canEdit ? "edit" : "only view"} this document.
         </p>
       )}
 
-      <input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        onBlur={handleTitleBlur}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-        }}
-        disabled={!canEdit}
-        className="mb-4 w-full rounded-lg border-none bg-transparent px-1 text-3xl font-semibold text-slate-900 outline-none transition focus:bg-white focus:shadow-sm disabled:opacity-90"
-        aria-label="Document title"
-      />
+      <div id="printable-area">
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          onBlur={handleTitleBlur}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+          }}
+          disabled={!canEdit}
+          className="mb-4 w-full rounded-lg border-none bg-transparent px-1 text-3xl font-semibold text-slate-900 outline-none transition focus:bg-white focus:shadow-sm disabled:opacity-90 print:px-0"
+          aria-label="Document title"
+        />
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        {canEdit && <Toolbar editor={editor} />}
-        <EditorContent editor={editor} />
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm print:rounded-none print:border-none print:shadow-none">
+          {canEdit && (
+            <div className="print:hidden">
+              <Toolbar editor={editor} />
+            </div>
+          )}
+          <EditorContent editor={editor} />
+        </div>
       </div>
 
       {shareOpen && <ShareDialog documentId={documentId} onClose={() => setShareOpen(false)} />}

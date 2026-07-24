@@ -38,6 +38,9 @@ with me" with the permission Alice granted.
   shared items.
 - **Persistence** — everything is stored in Postgres via Prisma; content,
   titles, and sharing all survive a refresh or a new login session.
+- **Export (stretch)** — download any document you can view as **Markdown**,
+  or **PDF** via the browser's print-to-PDF (a print-optimized stylesheet
+  hides the app chrome, leaving just the title and content).
 
 ## Tech stack
 
@@ -128,6 +131,7 @@ is required to run or review this project.
 | Share dialog | ![Share dialog](docs/screenshots/04-share-dialog.png) |
 | Recipient's dashboard (shared docs + permission badges) | ![Shared view](docs/screenshots/05-dashboard-shared-view.png) |
 | View-only document (toolbar hidden) | ![View only](docs/screenshots/06-editor-view-only.png) |
+| Export menu (Markdown / PDF, stretch feature) | ![Export menu](docs/screenshots/07-export-menu.png) |
 
 ## Scope notes
 

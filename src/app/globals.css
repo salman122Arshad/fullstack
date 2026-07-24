@@ -54,3 +54,18 @@ body {
   pointer-events: none;
   height: 0;
 }
+
+/* Export as PDF (window.print()): only #printable-area should render */
+@media print {
+  body {
+    background: #fff;
+  }
+  main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .ProseMirror {
+    min-height: 0 !important;
+  }
+}
