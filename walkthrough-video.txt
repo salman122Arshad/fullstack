@@ -1,8 +1,8 @@
-Walkthrough video URL: TODO — record a 3-5 minute unlisted Loom/YouTube walkthrough and paste the link here before submitting.
+Walkthrough video URL: https://www.loom.com/share/a56dac31239a4fec86757d093fe17a09
 
-Suggested talking points (see AI_WORKFLOW.md and ARCHITECTURE.md for full detail):
+Talking points covered (see AI_WORKFLOW.md and ARCHITECTURE.md for full detail):
 - Main user flow: login (seeded users) -> dashboard -> create/edit/format a document -> upload a file -> share with another user -> switch users to see the shared view.
-- What works end to end: rich-text editing + autosave, .txt/.md/.docx import, view/edit sharing with owner-only controls, persistence across refresh/login.
-- What was intentionally deprioritized: real-time collaboration, comments, version history, PDF export, granular permissions (all listed as optional stretch items).
-- Key implementation decisions: single Next.js app instead of a separate backend (simplest deploy path on Vercel); mocked auth via seeded users; HTML-as-storage for Tiptap content; Postgres via Supabase (Vercel serverless has an ephemeral filesystem, so SQLite wasn't viable in production).
-- How AI (Claude Code) supported the workflow: scaffolding/boilerplate, diagnosing two real toolchain version mismatches (Prisma 7 config format, Next.js 16 middleware->proxy rename), and a verification loop (unit tests + multi-user curl walkthrough + headless-browser screenshots) that caught two real bugs (a duplicate Tiptap extension warning, a header layout crowding issue) before they reached review.
+- What works end to end: rich-text editing + autosave, .txt/.md/.docx import, view/edit sharing with owner-only controls, persistence across refresh/login, and the export stretch feature (Markdown download + PDF via browser print).
+- What was intentionally deprioritized: real-time collaboration, comments, version history, granular permissions beyond view/edit (all listed as optional stretch items; export was the one stretch item built).
+- Key implementation decisions: single Next.js app instead of a separate backend (simplest deploy path on Vercel); mocked auth via seeded users; HTML-as-storage for Tiptap content; Postgres via Supabase (Vercel serverless has an ephemeral filesystem, so SQLite wasn't viable in production); PDF export via the browser's print dialog instead of a server-side rendering pipeline.
+- How AI (Claude Code) supported the workflow: scaffolding/boilerplate, diagnosing two real toolchain version mismatches (Prisma 7 config format, Next.js 16 middleware->proxy rename), and a verification loop (unit tests + multi-user curl walkthrough + headless-browser screenshots) that caught real bugs (a duplicate Tiptap extension warning, a mobile header layout issue, a duplicate heading in the Markdown export) before they reached review.
